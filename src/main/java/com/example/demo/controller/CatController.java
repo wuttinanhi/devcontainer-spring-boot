@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.example.demo.annotation.SecureWithJwt;
 import com.example.demo.dto.CatCreateDto;
 import com.example.demo.dto.CatUpdateDto;
 import com.example.demo.entity.Cat;
@@ -38,6 +39,7 @@ public class CatController {
     /**
      * default route
      */
+    @SecureWithJwt
     @GetMapping("/cat")
     public String indexCat() {
         return "Cat route!";

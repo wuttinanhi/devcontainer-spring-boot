@@ -23,17 +23,17 @@ public class ErrorHandlerController {
 
     @ExceptionHandler(value = NoSuchElementException.class)
     public ResponseEntity<Object> notFoundExceptionHandler() {
-        return new ResponseEntity<>(new RecordNotFound(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Object>(new RecordNotFound(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public ResponseEntity<Object> EmptyResultDataAccessExceptionHandler() {
-        return new ResponseEntity<>(new RecordNotFound(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Object>(new RecordNotFound(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> EntityNotFoundExceptionHandler() {
-        return new ResponseEntity<>(new RecordNotFound(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Object>(new RecordNotFound(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = RuntimeException.class)
