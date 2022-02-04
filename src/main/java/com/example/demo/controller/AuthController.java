@@ -10,7 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     @UseGuard({ JwtGuard.class, JwtGuard.class, JwtGuard.class })
     @GetMapping("/auth/secure")
-    public String indexCat() {
-        return "Cat route!";
+    public String secure() {
+        return "secure route";
+    }
+
+    @UseGuard({ JwtGuard.class })
+    @GetMapping("/auth/user")
+    public String user() {
+        return "user route";
     }
 }
