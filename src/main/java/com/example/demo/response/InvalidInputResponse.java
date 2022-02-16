@@ -9,8 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 public class InvalidInputResponse extends ResponseEntity<Object> {
 
-    private static class Response {
-        @SuppressWarnings("unused")
+    protected static class Response {
         public String status = "Bad Request";
 
         public HashMap<String, String> errors = new HashMap<>();
@@ -25,5 +24,4 @@ public class InvalidInputResponse extends ResponseEntity<Object> {
     public InvalidInputResponse(MethodArgumentNotValidException exception) {
         super(new Response(exception), HttpStatus.BAD_REQUEST);
     }
-
 }

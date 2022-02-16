@@ -4,8 +4,13 @@ import java.util.NoSuchElementException;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.example.demo.exception.InvalidLogin;
+import com.example.demo.exception.UserAlreadyExistsException;
+import com.example.demo.exception.UserNotFound;
 import com.example.demo.response.InternalServerErrorResponse;
 import com.example.demo.response.InvalidInputResponse;
+import com.example.demo.response.InvalidLoginResponse;
+import com.example.demo.response.RecordAlreadyExistsResponse;
 import com.example.demo.response.RecordNotFoundResponse;
 import com.example.demo.response.UnauthorizedResponse;
 
@@ -23,24 +28,27 @@ public class ErrorHandlerController {
         return new InvalidInputResponse(exception);
     }
 
-    @ExceptionHandler(value = NoSuchElementException.class)
+    @ExceptionHandler({
+            EntityNotFoundException.class, EmptyResultDataAccessException.class,
+            NoSuchElementException.class, UserNotFound.class
+    })
     public ResponseEntity<Object> notFoundExceptionHandler() {
-        return new RecordNotFoundResponse();
-    }
-
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    public ResponseEntity<Object> EmptyResultDataAccessExceptionHandler() {
-        return new RecordNotFoundResponse();
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Object> EntityNotFoundExceptionHandler() {
         return new RecordNotFoundResponse();
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> AccessDeniedExceptionHandler() {
         return new UnauthorizedResponse();
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<?> UserAlreadyExistsExceptionHandler() {
+        return new RecordAlreadyExistsResponse();
+    }
+
+    @ExceptionHandler(InvalidLogin.class)
+    public ResponseEntity<?> InvalidLoginHandler() {
+        return new InvalidLoginResponse();
     }
 
     @ExceptionHandler(value = RuntimeException.class)
