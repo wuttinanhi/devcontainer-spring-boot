@@ -4,9 +4,9 @@ import java.util.NoSuchElementException;
 
 import javax.persistence.EntityNotFoundException;
 
-import com.example.demo.exception.InvalidLogin;
+import com.example.demo.exception.InvalidLoginException;
 import com.example.demo.exception.UserAlreadyExistsException;
-import com.example.demo.exception.UserNotFound;
+import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.response.InternalServerErrorResponse;
 import com.example.demo.response.InvalidInputResponse;
 import com.example.demo.response.InvalidLoginResponse;
@@ -21,21 +21,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice()
+@RestControllerAdvice
 public class ErrorHandlerController {
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
-        return new InvalidInputResponse(exception);
-    }
-
-    @ExceptionHandler({
-            EntityNotFoundException.class, EmptyResultDataAccessException.class,
-            NoSuchElementException.class, UserNotFound.class
-    })
-    public ResponseEntity<Object> notFoundExceptionHandler() {
-        return new RecordNotFoundResponse();
-    }
-
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> AccessDeniedExceptionHandler() {
         return new UnauthorizedResponse();
@@ -46,13 +33,32 @@ public class ErrorHandlerController {
         return new RecordAlreadyExistsResponse();
     }
 
-    @ExceptionHandler(InvalidLogin.class)
+    @ExceptionHandler(InvalidLoginException.class)
     public ResponseEntity<?> InvalidLoginHandler() {
         return new InvalidLoginResponse();
     }
 
+    @ExceptionHandler(value = {
+            EntityNotFoundException.class, EmptyResultDataAccessException.class,
+            NoSuchElementException.class, UserNotFoundException.class
+    })
+    public ResponseEntity<Object> notFoundExceptionHandler() {
+        return new RecordNotFoundResponse();
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception) {
+        return new InvalidInputResponse(exception);
+    }
+
     @ExceptionHandler(value = RuntimeException.class)
-    public ResponseEntity<Object> unhandleErrorHandler(RuntimeException exception) {
+    public Object unhandleErrorHandler(RuntimeException exception) {
+        exception.printStackTrace();
+        return new InternalServerErrorResponse();
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> exceptionHandler(Exception exception) {
         exception.printStackTrace();
         return new InternalServerErrorResponse();
     }
