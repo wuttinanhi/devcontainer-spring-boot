@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.Data;
 
@@ -18,6 +20,7 @@ public class User {
 
     private String username;
 
+    @JsonProperty(access = Access.WRITE_ONLY)
     @JsonIgnore
     private String password;
 }

@@ -33,10 +33,6 @@ public class JwtService {
     }
 
     public String generateAccessToken(Integer userId) {
-        return generateAccessToken(userId.toString());
-    };
-
-    public String generateAccessToken(String userId) {
         Date issueDate = new Date();
         Date expiredDate = new Date(issueDate.getTime() + jwtDuration);
 
@@ -53,6 +49,7 @@ public class JwtService {
 
     public Boolean verifyToken(String token) {
         JWTVerifier verifier = JWT.require(this.getAlgorithm()).withIssuer(jwtIssuer).build();
+
         try {
             verifier.verify(token);
             return true;
@@ -61,10 +58,9 @@ public class JwtService {
         }
     }
 
-    public String getUserIdFromAccessToken(String token) {
+    public Integer getUserIdFromAccessToken(String token) {
         DecodedJWT decodedJWT = this.decode(token);
-        String payload = decodedJWT.getPayload();
-        return payload;
+        return decodedJWT.getClaim("userid").asInt();
     }
 
 }

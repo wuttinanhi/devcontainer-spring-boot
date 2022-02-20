@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.User;
-import com.example.demo.exception.InvalidLogin;
+import com.example.demo.exception.InvalidLoginException;
 import com.example.demo.exception.UserAlreadyExistsException;
-import com.example.demo.exception.UserNotFound;
+import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,21 +49,26 @@ public class AuthService {
         return userRepository.saveAndFlush(user);
     }
 
-    public User login(String username, String password) throws UserNotFound, InvalidLogin {
+    public User login(String username, String password) throws UserNotFoundException, InvalidLoginException {
         // get user by username
         User user = userRepository.findUserByUsername(username);
 
         // check user null
         if (user == null) {
-            throw new UserNotFound();
+            throw new UserNotFoundException();
         }
 
         // check password compare
         if (passwordEncoder.matches(password, user.getPassword()) == false) {
-            throw new InvalidLogin();
+            throw new InvalidLoginException();
         }
 
         // return user
         return user;
+    }
+
+    public User getUserFromAccessToken(String accessToken) throws UserNotFoundException {
+        Integer userId = jwtService.getUserIdFromAccessToken(accessToken);
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException());
     }
 }
