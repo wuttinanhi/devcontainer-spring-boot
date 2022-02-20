@@ -8,10 +8,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 public class InvalidInputResponse extends ResponseEntity<Object> {
-
     protected static class Response {
         public String status = "Bad Request";
-
         public HashMap<String, String> errors = new HashMap<>();
 
         public Response(MethodArgumentNotValidException exception) {

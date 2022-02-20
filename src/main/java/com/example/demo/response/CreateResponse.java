@@ -4,15 +4,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class CreateResponse<T> extends ResponseEntity<Object> {
-
     protected static class Response<T> {
+        public String status = "Created";
+        public T id;
+
         public Response(T id) {
             this.id = id;
         }
-
-        public String status = "Created";
-
-        public T id;
     }
 
     public CreateResponse(T id) {
