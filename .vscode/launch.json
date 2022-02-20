@@ -10,7 +10,7 @@
             "request": "launch",
             "mainClass": "com.example.demo.DemoApplication",
             "projectName": "demo",
-            "vmArgs": "-Xverify:none -Djava.security.egd=file:/dev/./urandom",
+            // "vmArgs": "-Xverify:none -Djava.security.egd=file:/dev/./urandom",
         }
     ]
 }
